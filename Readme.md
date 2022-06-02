@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Дарья Надоша](https://up.htmlacademy.ru/javascript/26/user/1759279).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов] (https://htmlacademy.ru/profile/joker).
 
 ---
 
