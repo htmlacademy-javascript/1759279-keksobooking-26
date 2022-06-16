@@ -19,8 +19,21 @@ const getRandomIntegerFloating = (min, max, digits) => {
 };
 getRandomIntegerFloating(0,100,3);
 
+const getRandomIntegerRounded = (min, max) => {
+  // min = Math.ceil(min);
+  // max = Math.floor(max);
+  if (max <= min || min < 0 || max <= 0 ) {
+    return ('Функция не может быть выполнена');
+  }
+  return Math.round(Math.random() * (((max - min)) + min)/500)*500;
+};
 
 // Генерация данных
+
+const LOCATION = {
+  lat: getRandomIntegerFloating(35.65000,35.70000,5), //число с плавающей точкой
+  lng: getRandomIntegerFloating(139.70000,139.80000,5), //число с плавающей точкой
+};
 
 const AVATAR = [
   'img/avatars/user01.png',
@@ -36,16 +49,22 @@ const AVATAR = [
 ];
 
 const TITLE = 'Идеальное предложение!'; //заголовок предложения
-const ADDRESS = LOCATION.lat + LOCATION.lng;
-const PRICE = getRandomInteger(2000,50000); //случайное целое положительное число
+const ADDRESS = Object.values(LOCATION);
+
+const PRICE = []; //случайное целое положительное число
+for (let i = 1000; i <= 50000; i++) {
+  if (i % 100) {
+    PRICE.push(i);
+  }
+}
 const TYPE = [
   'palace',
   'flat',
   'house',
   'bungalow',
   'hotel']; //одно из фиксированных значений
-const ROOMS = getRandomInteger(1,4); //случайное целое положительное число
-const GUESTS = getRandomInteger(1,6);//случайное целое положительно число
+const ROOMS = [1, 2, 3, 4]; //случайное целое положительное число
+const GUESTS = [1, 2, 3, 4, 5, 6];//случайное целое положительно число
 const CHECKIN = [
   '12:00',
   '13:00',
@@ -71,34 +90,33 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ]; //массив случайной длины
 
-const LOCATION = {
-  lat: getRandomIntegerFloating[35.65000,35.70000,5], //число с плавающей точкой
-  lng: getRandomIntegerFloating[139.70000,139.80000,5], //число с плавающей точкой
-};
-
 const SIMILAR_OFFER_COUNT = 10;
 
-//Что должно быть
-//массив из 3х объектов
-//1й объект выдает случайный аватар - сделано
-//2й объект выдает массив из 11 объектов
-//3й объект выдает координаты
-
-const getRandomArrayElement = (elements) => elements [getRandomInteger(0,elements.length - 1)];
-const getRandonArrayElements = (source, maxLength) => [...Array(1 + Math.random() * maxLength | 0)].map(() => source[Math.random() * source.length | 0]);
-
+const getRandomArrayElement = (elements) => elements [(getRandomInteger(0,elements.length - 1))];
+// const getRandomArrayElements = (source, maxLength) => [...Array(1 + Math.random() * maxLength | 0)].map(() => source[Math.random() * source.length | 0]);
+const getRandomArrayElements = ([...source], maxLength) => Array.from ({
+  length: Math.min(source.length, 1 + Math.random() * maxLength | 0) },
+() => source.splice(Math.random() * source.length | 0, 1) [0]
+);
 const createOffer = () => ({
   author: getRandomArrayElement(AVATAR),
   offer:
   TITLE,
   ADDRESS,
-  PRICE,
+  PRICE: getRandomIntegerRounded(1000,PRICE.length),
   TYPE: getRandomArrayElement(TYPE),
-  ROOMS,
-  GUESTS,
+  ROOMS: getRandomInteger(1,ROOMS.length),
+  GUESTS: getRandomInteger(1,GUESTS.length),
   CHECKIN: getRandomArrayElement(CHECKIN),
   CHECKOUT: getRandomArrayElement(CHECKOUT),
   FEATURES: getRandomArrayElements(FEATURES,FEATURES.length),
-
+  DESCRIPTION,
+  PHOTOS: getRandomArrayElements(PHOTOS,PHOTOS.length),
 });
 createOffer ();
+
+const similarOffers = Array.from({
+  length: SIMILAR_OFFER_COUNT
+}, createOffer);
+similarOffers();
+// console.log(similarOffers);
