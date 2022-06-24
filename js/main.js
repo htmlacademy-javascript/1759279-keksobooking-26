@@ -48,21 +48,20 @@ const PHOTOS = [
 ];
 
 const getRandomArrayElement = (elements) => elements [(getRandomInteger(0,elements.length - 1))];
-// const getAvatar = (index) => {
-//   if (0 < index <= 9) {
-//     return `img/avatars/user0${index}.png`;
-//   }
-//   return `img/avatars/user${index}.png`;
-// };
+const getAvatar = () => {
+  const number = getRandomInteger(1,11);
+  return number > 0&& number < 10 ? `img/avatars/user0${number}.png` : `img/avatars/user${number}.png`;
+};
 
-const createOffer = (index) => {
+
+const createOffer = () => {
   const location = {
     lat: getRandomFloat(35.65000, 35.70000, 5),
     lng: getRandomFloat(139.70000, 139.80000, 5),
   };
   return {
     author: {
-      avatar: `img/avatars/user${index}.png`,
+      avatar: getAvatar(),
     },
     offer: {
       title: TITLE,
