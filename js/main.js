@@ -88,4 +88,5 @@ const getSimilarOffers = (count) => {
   }
   return offers;
 };
-console.log(getSimilarOffers(10));
+getSimilarOffers(10);
+// console.log(getSimilarOffers(10));
