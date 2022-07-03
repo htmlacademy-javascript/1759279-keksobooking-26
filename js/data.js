@@ -62,15 +62,15 @@ const createOffer = () => {
   };
 };
 
-const getSimilarOffers = (count) => {
+const generateDataOffers = (count) => {
   const offers = [];
   for (let index = 1; index <= count; index ++) {
     offers.push(createOffer(index));
   }
   return offers;
 };
-getSimilarOffers(10);
-// console.log(getSimilarOffers(10));
+generateDataOffers(10);
+// console.log(generateDataOffers(10));
 
-export {getSimilarOffers};
+export {generateDataOffers};
 

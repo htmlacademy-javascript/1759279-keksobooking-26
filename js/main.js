@@ -1,8 +1,9 @@
-import {getSimilarOffers} from './data.js';
+import {generateDataOffers} from './data.js';
 
-getSimilarOffers(10);
+// generateDataOffers(10);
 
-// import {similarAdElement, similarAdFragment} from './create-elements';
-// similarAdElement.append(similarAdFragment);
+import {renderCards} from './create-elements.js';
+const dataOffers = generateDataOffers(10);
+renderCards(dataOffers[0]);
 
 // console.log(getSimilarOffers(10));
