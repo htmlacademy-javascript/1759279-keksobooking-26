@@ -1,3 +1,6 @@
+// import {TYPES} from './collections.js';
+// import {FEATURES} from './data.js';
+
 const userMap = document.querySelector('.map');
 const similarAdElement = userMap.querySelector('#map-canvas');
 
@@ -10,11 +13,30 @@ const renderCards = (offer) => {
   adElement.querySelector('.popup__title').textContent = `${offer.offer.title}`;
   adElement.querySelector('.popup__text--address').textContent = `${offer.offer.address}`;
   adElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
+  adElement.querySelector('.popup__type').textContent = `${offer.offer.type}`;
+
+  // const featureContainer = document.querySelector('.popup__features');
+
+  // featureContainer.innerHTML = '';
+  // FEATURES.forEach((feature) => {
+  //   const featureListItem = document.createElement('li');
+
+  //   featureListItem.classList.add('popup__feature');
+  //   featureListItem.classList.add(`popup__feature--${  feature}`);
+  // });
+
+  adElement.querySelector('.popup__text--capacity').textContent = `${offer.offer.rooms} комнаты для ${offer.offer.guests}  гостей`;
+  adElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
+
+  adElement.querySelector('.popup__description').textContent = `${offer.offer.description}`;
+  adElement.querySelector('.popup__photos').textContent = `${offer.offer.photos}`;
+
 
   similarAdFragment.append(adElement);
   similarAdElement.append(similarAdFragment);
 
 };
+
 
 export {renderCards};
 
