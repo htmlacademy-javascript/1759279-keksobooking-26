@@ -72,6 +72,6 @@ const generateDataOffers = (count) => {
 generateDataOffers(10);
 // console.log(generateDataOffers(10));
 
-export {generateDataOffers, FEATURES};
+export {generateDataOffers, FEATURES, PHOTOS};
 
 
