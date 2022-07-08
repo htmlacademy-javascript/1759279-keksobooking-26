@@ -21,13 +21,11 @@ const getFormDisabled = () => {
 };
 
 const getFormActive = () => {
-  mapFilters.addEventListener('click', (evt) => {
-    evt.preventDefault();
+  mapFilters.addEventListener('click', () => {
     mapFilters.classList.remove('map__filters--disabled');
   });
 
-  adFormFeatures.addEventListener('click', (evt) => {
-    evt.preventDefault();
+  adFormFeatures.addEventListener('click', () => {
     adFormFeatures.removeAttribute('disabled');
   });
 
@@ -38,13 +36,11 @@ const getFormActive = () => {
   //   }
   // });
 
-  bookingForm.addEventListener('click', (evt) => {
-    evt.preventDefault();
+  bookingForm.addEventListener('click', () => {
     bookingForm.classList.remove('ad-form--disabled');
   });
 
-  adFormField.addEventListener('click', (evt) => {
-    evt.preventDefault();
+  adFormField.addEventListener('click', () => {
     adFormField.removeAttribute('disabled', 'false');
   });
 
