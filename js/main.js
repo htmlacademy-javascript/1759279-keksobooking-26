@@ -6,9 +6,9 @@ import {renderCards} from './create-elements.js';
 const dataOffers = generateDataOffers(10);
 renderCards(dataOffers[0]);
 
-import {getFormDisabled, getFormActive} from './form.js';
+// import {getFormDisabled, getFormActive} from './form.js';
 
-getFormDisabled();
-getFormActive();
+// getFormDisabled();
+// getFormActive();
 
 
