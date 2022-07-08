@@ -1,5 +1,12 @@
-import {getSimilarOffers} from './data.js';
+import {generateDataOffers} from './data.js';
 
-getSimilarOffers(10);
+generateDataOffers(10);
 
-// console.log(getSimilarOffers(10));
+import {renderCards} from './create-elements.js';
+const dataOffers = generateDataOffers(10);
+renderCards(dataOffers[0]);
+
+import {getFormDisabled, getFormActive} from './form.js';
+
+getFormDisabled();
+getFormActive();
