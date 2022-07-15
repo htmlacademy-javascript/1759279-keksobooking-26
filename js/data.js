@@ -48,10 +48,10 @@ const createOffer = () => {
     offer: {
       title: TITLE,
       address: `${location.lng}, ${location.lat}`,
-      price: getRandomInteger(1000, 30000),
+      price: getRandomInteger(1000, 100000),
       type: getRandomArrayElement(TYPE),
-      rooms: getRandomInteger(1, 4),
-      guests: getRandomInteger(1, 6),
+      rooms: getRandomInteger(1, 3),
+      guests: getRandomInteger(1, 3),
       checkin: getRandomArrayElement(CHECKINOUT),
       checkout: getRandomArrayElement(CHECKINOUT),
       description: DESCRIPTION,
@@ -70,8 +70,6 @@ const generateDataOffers = (count) => {
   return offers;
 };
 generateDataOffers(10);
-// console.log(generateDataOffers(10));
+// console.log(getSimilarOffers(10));
 
-export {generateDataOffers, FEATURES, PHOTOS};
-
-
+export {generateDataOffers};
