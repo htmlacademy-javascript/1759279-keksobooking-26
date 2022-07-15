@@ -73,4 +73,3 @@ generateDataOffers(10);
 // console.log(getSimilarOffers(10));
 
 export {generateDataOffers};
-
