@@ -44,16 +44,23 @@ const renderCards = (offer) => {
   const photoContainer = adElement.querySelector('.popup__photos');
 
   photoContainer.innerHTML = '';
-  offer.offer.photos.forEach((photo) => {
-    const photoListItem = document.createElement('img');
+  if (!offer.offer.photos.length) {
+    photoContainer.remove();
+  } else {
+    offer.offer.photos.forEach((photo) => {
+      const photoListItem = document.createElement('img');
 
-    photoListItem.src = photo;
-    photoListItem.classList.add('popup__photo');
-    photoContainer.append(photoListItem);
+      photoListItem.src = photo;
+      photoListItem.width = 40;
+      photoListItem.height = 45;
+      photoListItem.classList.add('popup__photo');
 
-    adElement.querySelector('.popup__photos').src = photo ? adElement.querySelector('.popup__photos').src = photo : adElement.querySelector('.popup__photos').remove();
+      photoListItem.src = photo;
 
-  });
+      photoContainer.append(photoListItem);
+    });
+  }
+
 
   similarAdFragment.append(adElement);
   similarAdElement.append(similarAdFragment);
