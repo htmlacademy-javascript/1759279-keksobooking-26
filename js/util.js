@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 const getRandomInteger = (min, max) => {
   if (max <= min || min < 0 || max <= 0 ) {
     return ('Функция не может быть выполнена');
@@ -11,8 +13,34 @@ const getRandomFloat = (min, max, digits) => {
     return ('Функция не может быть выполнена');
   }
   const digitsDegree = 10 ** digits;
-  return Math.floor((Math.random() * (max - min)) + min * digitsDegree)/digitsDegree;
+  return (((Math.random() * (max - min)) + min * digitsDegree)/digitsDegree).toFixed(5);
 };
-getRandomFloat(0,100,3);
+getRandomFloat(35.65, 35.7, 5);
 
-export {getRandomInteger, getRandomFloat};
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+
+export {getRandomInteger, getRandomFloat, showAlert, isEscapeKey, isEnterKey};
