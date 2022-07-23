@@ -38,8 +38,8 @@ const getAvatar = () => {
 
 const createOffer = () => {
   const location = {
-    lat: getRandomFloat(35.65000, 35.70000, 5),
-    lng: getRandomFloat(139.70000, 139.80000, 5),
+    lat: getRandomFloat(35.65, 35.7, 0),
+    lng: getRandomFloat(139.7, 139.8, 0),
   };
   return {
     author: {

@@ -1,3 +1,5 @@
+import {isEscapeKey} from './util.js';
+import {sendData} from './api.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -38,35 +40,35 @@ const validatePriceOfTypes = (value) => value.length && parseInt(value, 10) >= m
 
 const getPriceOfTypesErrorMessage = () => `Минимальная цена ${minPrice[type.value]} руб./ночь`;
 
-pristine.addValidator(typeOfPrice, validatePriceOfTypes, getPriceOfTypesErrorMessage);
 
 const onTypeChange = () => {
   typeOfPrice.placeholder = minPrice[type.value];
-  pristine.validate(typeOfPrice);
+  typeOfPrice.min = minPrice[type.value];
+  // pristine.validate(typeOfPrice);
 };
 
 adForm.querySelector('#type').addEventListener('change', onTypeChange);
 
 //валидация комнат и гостей
 
-const roomNumbers = adForm.querySelector('[name="rooms"]');
-const amountOfGuests = adForm.querySelector('[name="capacity"]');
+// const roomNumbers = adForm.querySelector('[name="rooms"]');
+// const amountOfGuests = adForm.querySelector('[name="capacity"]');
 
-const roomsForGuests = {
-  1: [1],
-  2: [2,1],
-  3: [3, 2, 1],
-  100: [0],
-};
+// const roomsForGuests = {
+//   1: [1],
+//   2: [2,1],
+//   3: [3, 2, 1],
+//   100: [0],
+// };
 
-const validateRoomsForGuests = () => {
-  roomsForGuests[+roomNumbers.value].includes(+amountOfGuests.value);
-};
+// const validateRoomsForGuests = () => {
+//   roomsForGuests[+roomNumbers.value].includes(+amountOfGuests.value);
+// };
 
 
-const getRoomsForGuestsErrorMessage = () => `${roomNumbers.value} ${roomNumbers.value === '1' ? 'комната' : 'комнаты'} только для ${amountOfGuests.value} ${amountOfGuests.value === '1' ? 'гостя' : 'гостей'}`;
+// const getRoomsForGuestsErrorMessage = () => `${roomNumbers.value} ${roomNumbers.value === '1' ? 'комната' : 'комнаты'} только для ${amountOfGuests.value} ${amountOfGuests.value === '1' ? 'гостя' : 'гостей'}`;
 
-pristine.addValidator(roomNumbers, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
+// pristine.addValidator(roomNumbers, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
 // pristine.addValidator(amountOfGuests, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
 
 
@@ -76,7 +78,6 @@ const timeIn = adForm.querySelector('[name="timein"]');
 const timeOut = adForm.querySelector('[name="timeout"]');
 
 
-//УТОЧНИТЬ
 const validateTimeInOut = () => timeIn.value === timeOut.value;
 
 const getTimeInOutErrorMessage = () => {
@@ -95,35 +96,109 @@ const onTimeChange = () => {
 
 adForm.querySelector('#timein').addEventListener('change', onTimeChange);
 
+//Блокировка кнопки при отправке запроса
+
+const submitButton = adForm.querySelector('.ad-form__submit');
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикуется...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 //Реализация логики проверки
 
+const setUserFormSubmit = () => {
+  pristine.addValidator(typeOfPrice, validatePriceOfTypes, getPriceOfTypesErrorMessage);
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-// document.querySelector('.ad-form').onchange = (e) => {
-//   offer.checkin.value = e.target.value;
-//   this.checkout.value = e.target.value;
-// };
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          const body = document.querySelector('body');
+          const popupSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
+          const popupSuccessTemplateCloned = popupSuccessTemplate.cloneNode(true);
 
-// const addValidate = () => {
-//   adForm.addEventListener('submit', (evt) => {
-//     evt.preventDefault();
+          // eslint-disable-next-line no-shadow
+          const onPopupEscKeydown = (evt) => {
+            if (isEscapeKey(evt)) {
+              evt.preventDefault();
+              closeSuccessPopup();
+            }
+          };
 
-//     const button = document.querySelector('.ad-form__submit');
-//     const isValid = pristine.validate();
-//     if (isValid) {
-//       if (evt.keyCode === 13) {
-//         this.submit();
-//       }
-//       button.addEventListener('click');
-//     } else {
-//       button.setAttribute('disabled', '');
-//     }
+          const openSuccessPopup = () => {
+            body.append(popupSuccessTemplateCloned);
 
-//   });
-// };
+            // eslint-disable-next-line no-shadow
+            document.addEventListener('keydown', onPopupEscKeydown);
+          };
 
-export {};
+          const closeSuccessPopup = () => {
+            popupSuccessTemplateCloned.classList.add('hidden');
+
+            // eslint-disable-next-line no-shadow
+            document.removeEventListener('keydown',onPopupEscKeydown);
+          };
+
+          popupSuccessTemplateCloned.addEventListener('click', () => {
+            closeSuccessPopup();
+          });
+
+          //показать попап, сбросить форму в начальное состояние
+          openSuccessPopup();
+          unblockSubmitButton();
+          const clearForm = document.querySelector('.ad-form');
+          clearForm.reset();
+        },
+        () => {
+          const body = document.querySelector('body');
+          const popupErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+          const popupErrorTemplateCloned = popupErrorTemplate.cloneNode(true);
+
+          // eslint-disable-next-line no-shadow
+          const onPopupEscKeydown = (evt) => {
+            if (isEscapeKey(evt)) {
+              evt.preventDefault();
+              closeErrorPopup();
+            }
+          };
+
+          const openErrorPopup = () => {
+            body.append(popupErrorTemplateCloned);
+
+            // eslint-disable-next-line no-shadow
+            document.addEventListener('keydown', onPopupEscKeydown);
+          };
+
+          const closeErrorPopup = () => {
+            popupErrorTemplateCloned.classList.add('hidden');
+
+            // eslint-disable-next-line no-shadow
+            document.removeEventListener('keydown',onPopupEscKeydown);
+          };
+
+          popupErrorTemplateCloned.addEventListener('click', () => {
+            closeErrorPopup();
+          });
+
+          openErrorPopup();
+          unblockSubmitButton();
+          const clearForm = document.querySelector('.ad-form');
+          clearForm.reset();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+
+export {setUserFormSubmit};

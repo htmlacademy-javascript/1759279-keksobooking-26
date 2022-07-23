@@ -1,9 +1,15 @@
-import {generateDataOffers} from './data.js';
-import {renderCards} from './create-elemetns.js';
 import {getFormDisabled, getFormActive} from './form.js';
-import './validate-form.js';
-const dataOffers = generateDataOffers(10);
-renderCards(dataOffers[0]);
+import {setUserFormSubmit} from './validate-form.js';
+import {renderPins} from './map.js';
+import './slider.js';
+import {getData} from './api.js';
+
 getFormDisabled();
 getFormActive();
 
+const SIMILAR_CARDS_COUNT = 10;
+
+getData((cards) => {
+  renderPins(cards.slice(0, SIMILAR_CARDS_COUNT));
+});
+setUserFormSubmit();
