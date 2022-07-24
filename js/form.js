@@ -20,7 +20,7 @@ const getFormDisabled = () => {
 
 const getFormActive = () => {
   mapFilters.classList.remove('map__filters--disabled');
-  adFormFeatures.removeAttribute('disabled');
+  adFormFeatures.removeAttribute('disabled', 'false');
   bookingForm.classList.remove('ad-form--disabled');
   adFormField.removeAttribute('disabled', 'false');
 };
