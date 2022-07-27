@@ -1,9 +1,10 @@
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
+import {MAIN_LAT, MAIN_LNG} from './map.js';
 
-const adForm = document.querySelector('.ad-form');
+const cardForm = document.querySelector('.ad-form');
 
-const pristine = new Pristine(adForm, {
+const pristine = new Pristine(cardForm, {
   classTo:'ad-form__element',
   errorClass: 'has-danger',
   successClass: 'has-success',
@@ -11,20 +12,13 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error-text',
 });
 
-//валидация заголовка
 
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
-
-pristine.addValidator(adForm.querySelector('#title'), validateTitle, 'От 30 до 100 символов');
-
-// const validatePrice = (value) => value.max <= 100;
-
-// pristine.addValidator(adForm.querySelector('#price'), validatePrice, 'Максимальная цена - 100 000 руб./ночь');
+pristine.addValidator(cardForm.querySelector('#title'), validateTitle, 'От 30 до 100 символов');
 
 
-//цен по типу жилья
-
-const typeOfPrice = adForm.querySelector('#price');
+const priceElement = cardForm.querySelector('#price');
+const typeElement = cardForm.querySelector('[name="type"]');
 const minPrice = {
   'bungalow': 0,
   'flat': 1000,
@@ -33,49 +27,39 @@ const minPrice = {
   'palace': 10000,
 };
 
-const type = adForm.querySelector('[name="type"]');
-
-//УТОЧНИТЬ
-const validatePriceOfTypes = (value) => value.length && parseInt(value, 10) >= minPrice[type.value];
-
-const getPriceOfTypesErrorMessage = () => `Минимальная цена ${minPrice[type.value]} руб./ночь`;
+const validatePrice = (value) => value.length && parseInt(value, 10) >= minPrice[typeElement.value];
+const getValidatePriceErrorMessage = () => `Минимальная цена ${minPrice[typeElement.value]} руб./ночь`;
 
 
 const onTypeChange = () => {
-  typeOfPrice.placeholder = minPrice[type.value];
-  typeOfPrice.min = minPrice[type.value];
-  // pristine.validate(typeOfPrice);
+  priceElement.placeholder = minPrice[typeElement.value];
+  priceElement.min = minPrice[typeElement.value];
 };
 
-adForm.querySelector('#type').addEventListener('change', onTypeChange);
-
-//валидация комнат и гостей
-
-// const roomNumbers = adForm.querySelector('[name="rooms"]');
-// const amountOfGuests = adForm.querySelector('[name="capacity"]');
-
-// const roomsForGuests = {
-//   1: [1],
-//   2: [2,1],
-//   3: [3, 2, 1],
-//   100: [0],
-// };
-
-// const validateRoomsForGuests = () => {
-//   roomsForGuests[+roomNumbers.value].includes(+amountOfGuests.value);
-// };
+pristine.addValidator(priceElement, validatePrice, getValidatePriceErrorMessage);
+cardForm.querySelector('#type').addEventListener('change', onTypeChange);
 
 
-// const getRoomsForGuestsErrorMessage = () => `${roomNumbers.value} ${roomNumbers.value === '1' ? 'комната' : 'комнаты'} только для ${amountOfGuests.value} ${amountOfGuests.value === '1' ? 'гостя' : 'гостей'}`;
+const roomsElement = cardForm.querySelector('[name="rooms"]');
+const guestsElement = cardForm.querySelector('[name="capacity"]');
 
-// pristine.addValidator(roomNumbers, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
-// pristine.addValidator(amountOfGuests, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
+const roomsForGuests = {
+  1: [1],
+  2: [2,1],
+  3: [3, 2, 1],
+  100: [0],
+};
+
+const validateRoomsForGuests = () => roomsForGuests[+roomsElement.value].includes(+guestsElement.value);
+
+const getRoomsForGuestsErrorMessage = () => 'Укажите верное количество комнат и/или гостей';
+
+pristine.addValidator(roomsElement, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
+pristine.addValidator(guestsElement, validateRoomsForGuests, getRoomsForGuestsErrorMessage);
 
 
-//валидация времени заезда и выезда
-
-const timeIn = adForm.querySelector('[name="timein"]');
-const timeOut = adForm.querySelector('[name="timeout"]');
+const timeIn = cardForm.querySelector('[name="timein"]');
+const timeOut = cardForm.querySelector('[name="timeout"]');
 
 
 const validateTimeInOut = () => timeIn.value === timeOut.value;
@@ -94,11 +78,10 @@ const onTimeChange = () => {
   pristine.validate(timeIn);
 };
 
-adForm.querySelector('#timein').addEventListener('change', onTimeChange);
+cardForm.querySelector('#timein').addEventListener('change', onTimeChange);
 
-//Блокировка кнопки при отправке запроса
 
-const submitButton = adForm.querySelector('.ad-form__submit');
+const submitButton = cardForm.querySelector('.ad-form__submit');
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Публикуется...';
@@ -109,12 +92,11 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-//Реализация логики проверки
+const addressInput = document.querySelector('[name="address"]');
 
 const setUserFormSubmit = () => {
-  pristine.addValidator(typeOfPrice, validatePriceOfTypes, getPriceOfTypesErrorMessage);
 
-  adForm.addEventListener('submit', (evt) => {
+  cardForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
@@ -130,7 +112,6 @@ const setUserFormSubmit = () => {
           const onPopupEscKeydown = (evt) => {
             if (isEscapeKey(evt)) {
               evt.preventDefault();
-              closeSuccessPopup();
             }
           };
 
@@ -157,6 +138,7 @@ const setUserFormSubmit = () => {
           unblockSubmitButton();
           const clearForm = document.querySelector('.ad-form');
           clearForm.reset();
+          addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
         },
         () => {
           const body = document.querySelector('body');
@@ -167,7 +149,6 @@ const setUserFormSubmit = () => {
           const onPopupEscKeydown = (evt) => {
             if (isEscapeKey(evt)) {
               evt.preventDefault();
-              closeErrorPopup();
             }
           };
 
@@ -191,8 +172,6 @@ const setUserFormSubmit = () => {
 
           openErrorPopup();
           unblockSubmitButton();
-          const clearForm = document.querySelector('.ad-form');
-          clearForm.reset();
         },
         new FormData(evt.target),
       );
@@ -200,5 +179,14 @@ const setUserFormSubmit = () => {
   });
 };
 
+const clearBookingForm = () => {
+  const resetFormButton = document.querySelector('.ad-form__reset');
+  resetFormButton.addEventListener('click', () => {
+    const clearForm = document.querySelector('.ad-form');
+    clearForm.reset();
+    addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
+  });
+};
 
-export {setUserFormSubmit};
+
+export {setUserFormSubmit, clearBookingForm};

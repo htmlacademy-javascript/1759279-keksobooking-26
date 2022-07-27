@@ -1,7 +1,5 @@
 const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
-// const specialElement = document.querySelector('#type');
-
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -23,17 +21,9 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-// sliderElement.noUiSlider.on('update', () => {
-//   valueElement.value = sliderElement.noUiSlider.get();
-// });
-
 sliderElement.noUiSlider.on('update', (values, handle) => {
   const value = values[handle];
   valueElement.value = value;
 });
-
-// valueElement.addEventListener('change', () => {
-//   sliderElement.handler.noUiSlider.set([null, valueElement.input.value]);
-// });
 
 export {};

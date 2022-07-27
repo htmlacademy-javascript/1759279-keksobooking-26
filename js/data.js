@@ -1,9 +1,7 @@
 import {getRandomInteger, getRandomFloat} from './util.js';
 
-// Генерация данных
-
 const TITLE = 'Идеальное предложение!';
-const TYPE = [
+const TYPES_OF_LIVING = [
   'palace',
   'flat',
   'house',
@@ -49,7 +47,7 @@ const createOffer = () => {
       title: TITLE,
       address: `${location.lng}, ${location.lat}`,
       price: getRandomInteger(1000, 100000),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomArrayElement(TYPES_OF_LIVING),
       rooms: getRandomInteger(1, 3),
       guests: getRandomInteger(1, 3),
       checkin: getRandomArrayElement(CHECKINOUT),
@@ -70,6 +68,5 @@ const generateDataOffers = (count) => {
   return offers;
 };
 generateDataOffers(10);
-// console.log(getSimilarOffers(10));
 
 export {generateDataOffers};
