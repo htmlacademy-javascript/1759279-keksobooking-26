@@ -54,10 +54,5 @@ const setFilter = (offers) => {
   });
 };
 
-// const clearFilter = () => {
-//   const mapFiltersForm = document.querySelector('.map__filters');
-//   mapFiltersForm.reset();
-// };
-
 export {setFilter};
 
