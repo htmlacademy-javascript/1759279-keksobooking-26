@@ -133,7 +133,6 @@ const setUserFormSubmit = () => {
             closeSuccessPopup();
           });
 
-          //показать попап, сбросить форму в начальное состояние
           openSuccessPopup();
           unblockSubmitButton();
           const clearForm = document.querySelector('.ad-form');
