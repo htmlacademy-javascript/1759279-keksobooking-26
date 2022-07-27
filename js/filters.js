@@ -55,4 +55,3 @@ const setFilter = (offers) => {
 };
 
 export {setFilter};
-
