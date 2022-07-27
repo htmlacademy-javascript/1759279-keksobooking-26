@@ -42,5 +42,15 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
 
-export {getRandomInteger, getRandomFloat, showAlert, isEscapeKey, isEnterKey};
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+  };
+};
+
+export {getRandomInteger, getRandomFloat, showAlert, isEscapeKey, isEnterKey, debounce};

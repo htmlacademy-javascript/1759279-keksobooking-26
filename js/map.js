@@ -1,14 +1,18 @@
 import {getFormActive} from './form.js';
-import {renderCard} from './create-elemetns.js';
+import {renderCard} from './create-element.js';
+
+const MAIN_LAT = 35.65000;
+const MAIN_LNG = 139.7000;
+const SCALE = 11;
 const addressInput = document.querySelector('[name="address"]');
 
 const map = L.map('map-canvas').on('load', () => {
   getFormActive();
-  addressInput.value = '35.65000, 139.7000';
+  addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
 }).setView({
-  lat: 35.65000,
-  lng: 139.7000,
-}, 10);
+  lat: MAIN_LAT,
+  lng: MAIN_LNG,
+}, SCALE);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -16,6 +20,8 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+const markerGroup = L.layerGroup().addTo(map);
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -25,8 +31,8 @@ const mainPinIcon = L.icon({
 
 const mainPinmarker = L.marker(
   {
-    lat: 35.65000,
-    lng: 139.7000,
+    lat: MAIN_LAT,
+    lng: MAIN_LNG,
   },
   {
     draggable: true,
@@ -35,7 +41,6 @@ const mainPinmarker = L.marker(
 );
 
 mainPinmarker.addTo(map);
-
 
 mainPinmarker.on('move', (evt) => {
   const location = evt.target.getLatLng();
@@ -50,6 +55,8 @@ const icon = L.icon({
 
 const renderPins = (pinsData) => {
 
+  markerGroup.clearLayers();
+
   pinsData.forEach((offer) => {
     const standartMarker = L.marker(
       {
@@ -62,9 +69,9 @@ const renderPins = (pinsData) => {
     );
 
     standartMarker
-      .addTo(map)
+      .addTo(markerGroup)
       .bindPopup(renderCard(offer));
   });
 };
 
-export {renderPins};
+export {renderPins, MAIN_LAT, MAIN_LNG};
