@@ -6,7 +6,6 @@ const getRandomInteger = (min, max) => {
   }
   return Math.floor(Math.random() * (max - min)) + min;
 };
-// getRandomInteger(1,100);
 
 const getRandomFloat = (min, max, digits) => {
   if (max <= min || min < 0 || max <= 0 ) {
@@ -40,7 +39,6 @@ const showAlert = (message) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const isEnterKey = (evt) => evt.key === 'Enter';
 
 const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
@@ -53,4 +51,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {getRandomInteger, getRandomFloat, showAlert, isEscapeKey, isEnterKey, debounce};
+export {getRandomInteger, getRandomFloat, isEscapeKey, showAlert, debounce};

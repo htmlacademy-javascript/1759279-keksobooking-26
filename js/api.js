@@ -1,8 +1,13 @@
+import {showAlert} from './util.js';
+
 const getData = (onSuccess) => {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((offers) =>  {
       onSuccess(offers);
+    })
+    .catch(() => {
+      showAlert('Не удалось передать данные, попробуйте ещё раз');
     });
 };
 

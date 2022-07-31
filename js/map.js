@@ -47,6 +47,10 @@ mainPinmarker.on('move', (evt) => {
   addressInput.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
 });
 
+const resetMainPin = () => {
+  mainPinmarker.setLatLng(L.latLng(MAIN_LAT, MAIN_LNG));
+};
+
 const icon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -74,4 +78,4 @@ const renderPins = (pinsData) => {
   });
 };
 
-export {renderPins, MAIN_LAT, MAIN_LNG};
+export {renderPins, MAIN_LAT, MAIN_LNG, mainPinmarker, resetMainPin};

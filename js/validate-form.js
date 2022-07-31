@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
-import {MAIN_LAT, MAIN_LNG} from './map.js';
+import {MAIN_LAT, MAIN_LNG, renderPins, resetMainPin} from './map.js';
+import {CARDS_COUNT} from './filters.js';
 
 const cardForm = document.querySelector('.ad-form');
 
@@ -112,6 +113,8 @@ const setUserFormSubmit = () => {
           const onPopupEscKeydown = (evt) => {
             if (isEscapeKey(evt)) {
               evt.preventDefault();
+              popupSuccessTemplateCloned.classList.add('hidden');
+              document.removeEventListener('keydown',onPopupEscKeydown);
             }
           };
 
@@ -138,6 +141,7 @@ const setUserFormSubmit = () => {
           const clearForm = document.querySelector('.ad-form');
           clearForm.reset();
           addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
+          resetMainPin();
         },
         () => {
           const body = document.querySelector('body');
@@ -148,6 +152,8 @@ const setUserFormSubmit = () => {
           const onPopupEscKeydown = (evt) => {
             if (isEscapeKey(evt)) {
               evt.preventDefault();
+              popupErrorTemplateCloned.classList.add('hidden');
+              document.removeEventListener('keydown',onPopupEscKeydown);
             }
           };
 
@@ -178,12 +184,17 @@ const setUserFormSubmit = () => {
   });
 };
 
-const clearBookingForm = () => {
+const clearBookingForm = (offers) => {
   const resetFormButton = document.querySelector('.ad-form__reset');
-  resetFormButton.addEventListener('click', () => {
+  resetFormButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
     const clearForm = document.querySelector('.ad-form');
     clearForm.reset();
-    addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
+    const clearMapFilter = document.querySelector('.map__filters');
+    clearMapFilter.reset();
+    renderPins(offers.slice(0, CARDS_COUNT));
+    resetMainPin();
   });
 };
 

@@ -1,4 +1,7 @@
-import { renderPins } from './map.js';
+import {renderPins} from './map.js';
+import {debounce} from './util.js';
+
+const RERENDER_DELAY = 500;
 
 const CARDS_COUNT = 10;
 const PriceFilter = {
@@ -32,26 +35,43 @@ const filterPrice = (offer) => {
 const filterRooms = (offer) => housingRooms.value === DEFAULT || +housingRooms.value === offer.offer.rooms;
 const filterGuests = (offer) => housingGuests.value === DEFAULT || +housingGuests.value === offer.offer.guests;
 
-const setFilter = (offers) => {
+const filterFeatures = (offer) => {
+  const offerFeatures = offer.offer.features;
+  const checkedFeatures = formFilter.querySelectorAll('.map__checkbox:checked');
+  const filteredFeatures = [...checkedFeatures].map((feature) => feature.value);
 
-  formFilter.addEventListener('change', () => {
-    const filteredOffers = [];
+  if (!filteredFeatures.length) {
+    return true;
+  }
 
-
-    for (let i = 0; i < offers.length; i++) {
-      if (filterType(offers[i]) &&
-        filterPrice(offers[i]) &&
-        filterRooms(offers[i]) &&
-        filterGuests(offers[i])) {
-        filteredOffers.push(offers[i]);
-
-        if (filteredOffers.length >= CARDS_COUNT) {
-          break;
-        }
-      }
-    }
-    renderPins(filteredOffers);
-  });
+  if (offerFeatures && offerFeatures.length) {
+    return filteredFeatures.some((filteredFeature) => offerFeatures.includes(filteredFeature));
+  } else {
+    return false;
+  }
 };
 
-export {setFilter};
+const filterOffers = (offers) => {
+  const filteredOffers = [];
+
+  for (let i = 0; i < offers.length; i++) {
+    if (filterType(offers[i]) &&
+      filterPrice(offers[i]) &&
+      filterRooms(offers[i]) &&
+      filterGuests(offers[i]) &&
+      filterFeatures(offers[i])) {
+      filteredOffers.push(offers[i]);
+
+      if (filteredOffers.length >= CARDS_COUNT) {
+        break;
+      }
+    }
+  }
+  renderPins(filteredOffers);
+};
+
+const setFilter = (offers) => {
+  formFilter.addEventListener('change', debounce(() => filterOffers(offers), RERENDER_DELAY));
+};
+
+export {CARDS_COUNT, setFilter};
