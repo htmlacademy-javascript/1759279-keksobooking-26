@@ -33,5 +33,3 @@ photoChooserInput.addEventListener('change', () => {
 });
 
 
-export {};
-

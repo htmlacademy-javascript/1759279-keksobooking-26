@@ -4,11 +4,12 @@ import {debounce} from './util.js';
 const RERENDER_DELAY = 500;
 
 const CARDS_COUNT = 10;
+const DEFAULT = 'any';
+
 const PriceFilter = {
   MIDDLE: 10000,
   HIGH: 50000,
 };
-const DEFAULT = 'any';
 
 const formFilter = document.querySelector('.map__filters');
 const housingType = formFilter.querySelector('#housing-type');
@@ -45,7 +46,7 @@ const filterFeatures = (offer) => {
   }
 
   if (offerFeatures && offerFeatures.length) {
-    return filteredFeatures.some((filteredFeature) => offerFeatures.includes(filteredFeature));
+    return filteredFeatures.every((filteredFeature) => offerFeatures.includes(filteredFeature));
   } else {
     return false;
   }

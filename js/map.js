@@ -4,11 +4,13 @@ import {renderCard} from './create-element.js';
 const MAIN_LAT = 35.65000;
 const MAIN_LNG = 139.7000;
 const SCALE = 11;
+const MAX_DIGITS = 5;
+
 const addressInput = document.querySelector('[name="address"]');
 
 const map = L.map('map-canvas').on('load', () => {
   getFormActive();
-  addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
+  addressInput.value = `${MAIN_LAT.toFixed(MAX_DIGITS)}, ${MAIN_LNG.toFixed(MAX_DIGITS)}`;
 }).setView({
   lat: MAIN_LAT,
   lng: MAIN_LNG,
@@ -44,7 +46,7 @@ mainPinmarker.addTo(map);
 
 mainPinmarker.on('move', (evt) => {
   const location = evt.target.getLatLng();
-  addressInput.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
+  addressInput.value = `${location.lat.toFixed(MAX_DIGITS)}, ${location.lng.toFixed(MAX_DIGITS)}`;
 });
 
 const resetMainPin = () => {

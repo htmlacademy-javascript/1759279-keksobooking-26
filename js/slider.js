@@ -42,4 +42,3 @@ typeElement.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
 
-export {};

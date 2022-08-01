@@ -1,21 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const getRandomInteger = (min, max) => {
-  if (max <= min || min < 0 || max <= 0 ) {
-    return ('Функция не может быть выполнена');
-  }
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-const getRandomFloat = (min, max, digits) => {
-  if (max <= min || min < 0 || max <= 0 ) {
-    return ('Функция не может быть выполнена');
-  }
-  const digitsDegree = 10 ** digits;
-  return (((Math.random() * (max - min)) + min * digitsDegree)/digitsDegree).toFixed(5);
-};
-getRandomFloat(35.65, 35.7, 5);
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -51,4 +35,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {getRandomInteger, getRandomFloat, isEscapeKey, showAlert, debounce};
+export {isEscapeKey, showAlert, debounce};
