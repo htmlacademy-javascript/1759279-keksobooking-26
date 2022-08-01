@@ -8,6 +8,15 @@ const TYPES = {
 
 const similarCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
+const renderOrRemove = (cardElement, className, text) => {
+  const classElement = cardElement.querySelector(className);
+  if (text) {
+    classElement.textContent = text;
+  } else {
+    classElement.remove();
+  }
+};
+
 const renderCard = (offer) => {
   const cardElement = similarCardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = offer.offer.title;
@@ -34,7 +43,7 @@ const renderCard = (offer) => {
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.offer.rooms} комнаты для ${offer.offer.guests}  гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
 
-  cardElement.querySelector('.popup__description').textContent = `${offer.offer.description}`;
+  renderOrRemove(cardElement, '.popup__description', offer.offer.description);
   cardElement.querySelector('.popup__photos').textContent = `${offer.offer.photos}`;
 
   const photoContainer = cardElement.querySelector('.popup__photos');

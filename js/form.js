@@ -4,18 +4,25 @@ const bookingForm = document.querySelector('.ad-form');
 const bookingFormField = document.querySelector('.ad-form__field');
 
 const getFormDisabled = () => {
-  mapFilters.classList.add('map__filters--disabled');
-  mapFiltersFeatures.setAttribute('disabled', '');
   bookingForm.classList.add('ad-form--disabled');
   bookingFormField.setAttribute('disabled', '');
 };
 
+const getfilterDisable = () => {
+  mapFilters.classList.add('map__filters--disabled');
+  mapFiltersFeatures.setAttribute('disabled', '');
+};
+
 const getFormActive = () => {
-  mapFilters.classList.remove('map__filters--disabled');
-  mapFiltersFeatures.removeAttribute('disabled', 'false');
+
   bookingForm.classList.remove('ad-form--disabled');
-  bookingFormField.removeAttribute('disabled', 'false');
+  bookingFormField.removeAttribute('disabled');
+};
+
+const getfilterEnable = () => {
+  mapFilters.classList.remove('map__filters--disabled');
+  mapFiltersFeatures.removeAttribute('disabled');
 };
 
 
-export {getFormDisabled, getFormActive};
+export {getFormDisabled, getfilterDisable, getFormActive, getfilterEnable};

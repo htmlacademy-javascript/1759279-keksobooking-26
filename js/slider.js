@@ -1,5 +1,6 @@
 const sliderElement = document.querySelector('.ad-form__slider');
-const valueElement = document.querySelector('#price');
+const priceElement = document.querySelector('#price');
+const typeElement = document.querySelector('#type');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -23,7 +24,21 @@ noUiSlider.create(sliderElement, {
 
 sliderElement.noUiSlider.on('update', (values, handle) => {
   const value = values[handle];
-  valueElement.value = value;
+  priceElement.value = value;
 });
 
-export {};
+priceElement.addEventListener('change', () => {
+  sliderElement.noUiSlider.set([priceElement.value]);
+});
+
+typeElement.addEventListener('change', () => {
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: Number(priceElement.min),
+      max: Number(priceElement.max),
+    },
+    start: Number(priceElement.min),
+  });
+  sliderElement.noUiSlider.set(priceElement.value);
+});
+

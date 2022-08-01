@@ -2,7 +2,7 @@ const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const avatarChooser = document.querySelector('.ad-form-header__upload');
 const avatarChooserInput = avatarChooser.querySelector('[type=file]');
-const avatarPreview = document.querySelector('.ad-form-header__preview');
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
 
 const photoChooser = document.querySelector('.ad-form__upload');
 const photoChooserInput = photoChooser.querySelector('[type=file]');
@@ -24,10 +24,12 @@ photoChooserInput.addEventListener('change', () => {
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
-    photoPreview.src = URL.createObjectURL(file);
+    const photoImg = document.createElement('img');
+    photoImg.width = 70;
+    photoImg.height = 70;
+    photoImg.src = URL.createObjectURL(file);
+    photoPreview.appendChild(photoImg);
   }
 });
 
-
-export {};
 
