@@ -142,6 +142,8 @@ const setUserFormSubmit = () => {
           clearForm.reset();
           addressInput.value = `${MAIN_LAT.toFixed(5)}, ${MAIN_LNG.toFixed(5)}`;
           resetMainPin();
+          const clearMapFilter = document.querySelector('.map__filters');
+          clearMapFilter.reset();
         },
         () => {
           const body = document.querySelector('body');
